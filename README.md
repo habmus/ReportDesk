@@ -1,4 +1,4 @@
-# **Library ReportDesk Website**
+# ** 📚 Library ReportDesk Website**
 
 
 The goal of this project is to provide a digital method of recording, saving, and reporting on the library’s staff interactions with patrons, commonly known as usage statistics. Currently, the University of North Texas at Dallas University Library keeps records of these interactions manually with a mix of physical paper and digital spreadsheets. This system will improve this process in a few key ways. First, it will centralize the usage statistics, making them easy to save and view. The system will also help ensure the integrity of the data as it is collected by using fixed data fields and metadata. Next, it will automate the reporting process, limiting possible errors and providing more historical data in a single snapshot view. Lastly, it will cut down on paper waste and physical storage required by paper documents.
