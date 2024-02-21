@@ -1,4 +1,4 @@
-Library ReportDesk Website
+**Library ReportDesk Website**
 
 
 The goal of this project is to provide a digital method of recording, saving, and reporting on the library’s staff interactions with patrons, commonly known as usage statistics. Currently, the University of North Texas at Dallas University Library keeps records of these interactions manually with a mix of physical paper and digital spreadsheets. This system will improve this process in a few key ways. First, it will centralize the usage statistics, making them easy to save and view. The system will also help ensure the integrity of the data as it is collected by using fixed data fields and metadata. Next, it will automate the reporting process, limiting possible errors and providing more historical data in a single snapshot view. Lastly, it will cut down on paper waste and physical storage required by paper documents.
@@ -6,7 +6,7 @@ The goal of this project is to provide a digital method of recording, saving, an
 The authors of this project wish to provide the UNTD University Library with a system that will help them more accurately and efficiently collect data about the services they provide to their patrons. This project is motivated by fulfilling this real and functional need of the UNTD University Library. By developing this system, the authors wish to enable the UNTD University Library to make more precise data-driven decisions. Working with a client with genuine requirements, the authors of this project hope to simulate, as closely as possible, what a real-world software design project would entail. In working in such an environment, the authors hope to both demonstrate and hone the core skills of any software developer: communication and logical problem-solving, while also providing an organization with tangible value.
 
 
-User Requirements
+**User Requirements**
 1. Each staff member shall have a personal account in the system that they use to sign into the application.
 
 2. Staff members should be able to reset their password in case they forget their credentials.
@@ -38,7 +38,8 @@ User Requirements
 16. Users shall be able to view report of most frequent inquiry locations of question and answer sessions
 
 
-System Requirements
+**System Requirements**
+
 1. Every single member (administrator/staff) shall have their own account which they can use to sign in to their account. On the login page, every user will be faced with two text fields. One for username and the other for their password. After their credentials are inputted, they will be sent to the database for verification.
 If the user’s username or password does not match with the ones saved in our database, ”Incorrect Username/Password” will be output to the user.
 As soon as verification is successful, the user will be taken straight to the homepage of our system which is the records page.
