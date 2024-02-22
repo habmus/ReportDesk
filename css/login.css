@@ -1,0 +1,37 @@
+#Loginbox{
+
+  text-align: center;
+  width: 50%;
+  margin-left: 25%;
+  
+}
+label{
+    font-size: 50px;
+}
+
+#Logintext{
+  background-color: rgba(255,255,255,0.5);
+  
+}
+
+#loginbox{
+  background-color: rgba(255,255,255,0.5);
+  
+}
+
+h2{
+  font-size: 65px;
+}
+
+header{
+  display: flex;
+  justify-content: space-between;
+}
+
+html{
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5)50%,rgba(0,0,0,0.5)50%), url(/images/jaghead.png);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+}
