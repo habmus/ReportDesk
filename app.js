@@ -1,8 +1,9 @@
 const express = require("express") // import express
 const mysql = require("mysql") // import mysql
-const path = require('path')
+const path = require('path') //path finder
 const app = express(); //running express erver
 const bodyParser = require('body-parser');
+const randomString = require("randomstring")
 
 require('dotenv').config();
 
@@ -35,11 +36,39 @@ app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/index.html'); //send 
 });
+
+app.post("/password-reset", (req, res) => {
+  const email = req.body.email; // gets email from pwreset email input
+  
+
+  console.log('Email:', email); // error handling
+
+  dbconnect.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => { // get email from db
+    if (error) {
+      console.error('Database query error:', error);
+      res.status(500).send('An error occurred');
+    } else if (results.length > 0) {
+
+      const randomString = Randomstring.generate(); // generate random token 
+      const content = '<p> Click this link to reset password: ' + results[0].email     // send an email message to the users email
+
+    
+      // res.redirect('/pages/password-reset/page2.html'); 
+
+    } else {
+     
+      res.status(401).send('Incorrect Email');
+    }
+
+  })
+
+});
+
 app.post("/login", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const username = req.body.username; //gets email from login email input
+  const password = req.body.password; //gets password from login password input
 
   console.log('Username:', username);
   console.log('Password:', password);
@@ -49,16 +78,16 @@ app.post("/login", (req, res) => {
       console.error('Database query error:', error);
       res.status(500).send('An error occurred');
     } else if (results.length > 0) {
-      // If the password matches, redirect to the homepage or dashboard
-      res.redirect('/pages/homepage.html'); // Adjusted the path to your actual homepage
+      // If password match
+      res.redirect('/pages/homepage.html'); // go to homepage
     } else {
-      // If no user is found with that username, send an incorrect credentials message
-      res.status(401).send('Incorrect Username/Password');
+      // If password dont match
+      res.status(401).send('Incorrect Username/Password');// take user to page and print out that message
     }
   });
 });
 
 
 app.listen(5001, () => {
-  console.log("Server is listening on 5001"); 
+  console.log("Server is listening on 5001"); // server link localhost:5001
 })
