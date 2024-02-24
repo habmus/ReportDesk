@@ -51,11 +51,11 @@ app.post("/password-reset", (req, res) => {
       res.status(500).send('An error occurred');
     } else if (results.length > 0) {
 
-      const randomString = Randomstring.generate(); // generate random token 
+      const randomString = randomstring.generate(); // generate random token 
       const content = '<p> Click this link to reset password: ' + results[0].email     // send an email message to the users email
 
     
-      // res.redirect('/pages/password-reset/page2.html'); 
+      res.redirect('/pages/password-reset/page2.html'); 
 
     } else {
      
