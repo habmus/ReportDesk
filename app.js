@@ -3,7 +3,7 @@ const mysql = require("mysql") // import mysql
 const path = require('path') //path finder
 const app = express(); //running express erver
 const bodyParser = require('body-parser');
-const randomString = require("randomstring")
+//const randomString = require("randomstring")
 
 require('dotenv').config();
 
