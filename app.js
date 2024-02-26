@@ -1,7 +1,7 @@
 const express = require("express") // import express
 const mysql = require("mysql") // import mysql
 const path = require('path') //path finder
-const app = express(); //running express erver
+const app = express(); //running express server
 const bodyParser = require('body-parser');
 //const randomString = require("randomstring")
 
@@ -15,11 +15,8 @@ const dbconnect = mysql.createConnection({ // assigning var to mysql function
 })
 
 dbconnect.connect((error) => {
-  if (error) {
-    console.log(error) 
-  } else {
-    console.log("Connected to MYSQL DB")
-  }
+  if (error) console.log(error) //if error print error
+  else console.log("Connected to MYSQL DB") // else prnt this mssg in node terminal
 })
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,11 +48,11 @@ app.post("/password-reset", (req, res) => {
       res.status(500).send('An error occurred');
     } else if (results.length > 0) {
 
-      const randomString = Randomstring.generate(); // generate random token 
+      const randomString = randomstring.generate(); // generate random token 
       const content = '<p> Click this link to reset password: ' + results[0].email     // send an email message to the users email
 
     
-      // res.redirect('/pages/password-reset/page2.html'); 
+      res.redirect('/pages/password-reset/page2.html'); 
 
     } else {
      
@@ -82,7 +79,7 @@ app.post("/login", (req, res) => {
       res.redirect('/pages/homepage.html'); // go to homepage
     } else {
       // If password dont match
-      res.status(401).send('Incorrect Username/Password');// take user to page and print out that message
+      res.status(401).send('Incorrect Username/Password');// error code about incorrect credentials
     }
   });
 });
