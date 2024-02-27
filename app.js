@@ -64,13 +64,13 @@ app.post("/password-reset", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const username = req.body.username; //gets email from login email input
+  const email = req.body.email; //gets email from login email input
   const password = req.body.password; //gets password from login password input
 
-  console.log('Username:', username);
+  console.log('Email:', email);
   console.log('Password:', password);
 
-  dbconnect.query('SELECT * FROM users WHERE email = ? AND password = ?', [username, password], (error, results) => {
+  dbconnect.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password], (error, results) => {
     if (error) {
       console.error('Database query error:', error);
       res.status(500).send('An error occurred');
@@ -79,7 +79,7 @@ app.post("/login", (req, res) => {
       res.redirect('/pages/homepage.html'); // go to homepage
     } else {
       // If password dont match
-      res.status(401).send('Incorrect Username/Password');// error code about incorrect credentials
+      res.status(401).send('Incorrect Email/Password');// error code about incorrect credentials
     }
   });
 });
