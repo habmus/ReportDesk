@@ -3,7 +3,12 @@ const mysql = require("mysql") // import mysql
 const path = require('path') //path finder
 const app = express(); //running express server
 const bodyParser = require('body-parser');
-//const randomString = require("randomstring")
+const crypto = require("crypto"); //
+const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer"); // for sending mails
+
+
+// Inside your route
 
 require('dotenv').config();
 
@@ -36,32 +41,67 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + '/index.html'); //send 
 });
 
-app.post("/password-reset", (req, res) => {
-  const email = req.body.email; // gets email from pwreset email input
-  
 
-  console.log('Email:', email); // error handling
+app.post("/password-reset", async (req, res) => {
+  const email = req.body.email; //grab email from html 
+  console.log('Email:', email);
 
-  dbconnect.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => { // get email from db
+  dbconnect.query('SELECT * FROM Users WHERE email = ?', [email], async (error, results) => {
     if (error) {
       console.error('Database query error:', error);
       res.status(500).send('An error occurred');
     } else if (results.length > 0) {
+      const resetToken = crypto.randomBytes(20).toString('hex'); //create random Token
+      const hash = await bcrypt.hash(resetToken, 10);
 
-      const randomString = randomstring.generate(); // generate random token 
-      const content = '<p> Click this link to reset password: ' + results[0].email     // send an email message to the users email
+      // created password_reset table in DB
 
-    
-      res.redirect('/pages/password-reset/page2.html'); 
+      const deleteExistingTokens = 'DELETE FROM password_resets WHERE email = ?'; //remove current token
+      dbconnect.query(deleteExistingTokens, [email], (error, results) => {
+        if (error) console.log(error); // print error if it wasnt able to delele
+      });
 
+      const insertToken = 'INSERT INTO password_resets (email, token) VALUES (?, ?)';
+      dbconnect.query(insertToken, [email, hash], (error, results) => { //insetr newest token in token field 
+        if (error) {
+          console.log(error);
+          res.status(500).send('An error occurred during token generation');
+        } else {
+          const transporter = nodemailer.createTransport({
+            host: 'smtp.office365.com', //outlook email
+            port: 587,
+            secure: false, // true for 465, false for other ports
+            auth: {
+              user: process.env.EMAIL, // stored in .env
+              pass: process.env.EMAIL_PASSWORD // host email stored in .env
+            }
+          });
+
+          // sending reset link
+          const mailOptions = {
+            from: process.env.EMAIL, // sender
+            to: email, // reciever
+            subject: 'Password Reset', // Subject line
+            html: `<p>Click <a href="http://localhost:5001/pages/password-reset/page2.html?token=${resetToken}&email=${email}">here</a> to reset your password</p>` //email message
+          };
+          // error handling
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.error("Error sending email:", error);
+              res.status(500).send('Error sending email: ' + error.message);
+            } else {
+              console.log('Email sent: ' + info.response);
+              res.status(200).send('Reset password link sent to your email address.');
+            }
+          });
+        }
+      });
     } else {
-     
-      res.status(401).send('Incorrect Email');
+      res.status(401).send('Email not found'); //print if email is not in the DB
     }
-
-  })
-
+  });
 });
+
 
 app.post("/login", (req, res) => {
   const email = req.body.email; //gets email from login email input
