@@ -1,0 +1,85 @@
+html {
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5)50%, rgba(0, 0, 0, 0.5)50%), url(/images/jaghead.png);
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+}
+
+body{
+  margin: 0px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1051A0;
+  margin: auto;
+  box-shadow: 0px 2px 5px #008000;
+  margin-left: 0%;
+  padding: 1.5em;
+}
+
+.navbuttons {
+  text-decoration: none;
+  color: white;
+  padding: 1em 1em;
+  font-size: 1.3em;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+
+}
+
+.navbuttons:hover {
+  background-color: #426bba;
+}
+
+.navbar-brand img {
+  width: 12em;
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.reportdesk {
+  text-decoration: none;
+  color: white;
+  font-size: 2.5em;
+}
+
+.recordsheader {
+  position: relative;
+  background-color: white;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  /* height: 3.5em; */
+  padding-left: 6.5em;
+  line-height: 2.0em;
+  font-size: 2.5em;
+  margin-top: 0px;
+}
+
+.questionhead {
+  font-size: 2.5em;
+  text-align: center;
+}
+
+.formdiv {
+  border-style: solid;
+  height: 20em;
+  width: 80em;
+  margin: auto;
+  /* This center the div   */
+  background-color: white;
+}
+
+
+.leftside {
+  position: absolute;
+  left: 20%;
+}
+
+.rightside {
+  position: absolute;
+  right: 20%;
+}
