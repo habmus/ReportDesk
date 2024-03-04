@@ -3,7 +3,7 @@
 
 <head>
     <title>Select Report Type</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <!--<link rel="stylesheet" type="text/css" href="/css/style.css"> -->
 </head>
 
 <body>
@@ -42,7 +42,20 @@
             <a href=http://www.location.com>location</a>
             <input type="date">
             <button id='1'> View </button>
-            <button id='2'> Export/Import</button>
+            <button id='2'> 
+                Export/Import</button>
+
+            <div>
+                <form action="/reportrequest" method="POST">
+                <p> Daily <input type="radio" name="radio1" value="1"> </p> 
+                <p> Monthly <input type="radio" name="radio1" value="2"> </p>
+                <p> Yearly <input type="radio" name="radio1" value="3"> </p>
+                <p> Duration <input type="radio" name="radio1" value="4"> </p> 
+                <p> Location <input type="radio" name="radio1" value="5"> </p>
+                <p> Course <input type="radio" name="radio1" value="6"> </p>
+                <button id="report" type="submit">submit</button>
+                </form>   
+            </div>
 </body>
 
 </html>
