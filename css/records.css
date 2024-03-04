@@ -62,24 +62,96 @@ nav {
 .questionhead {
   font-size: 2.5em;
   text-align: center;
+  color: white;
+  
+  
+  
 }
 
 .formdiv {
   border-style: solid;
-  height: 20em;
-  width: 80em;
+  height: 30em;
+  width: 70em;
   margin: auto;
   /* This center the div   */
-  background-color: white;
+  background-color: #073875;
+  border-radius: 1.5em;
+  border-color: rgb(21, 21, 129);
+}
+
+.leftside div select{
+  
+  font-size: 20px;
+  width: 10em;
+  margin-top: 1em;
+  border: 2px solid;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  color: #333;
+  
+}
+
+.rightside div select{
+  font-size: 20px;
+  width: 12em;
+  margin-top: 1em;
+  border: 2px solid;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  color: #333;
+
+}
+
+
+.rightside textarea{
+  width: 97%;
+  height: 120px;
+  border: 2px solid;
+  margin-top: 2em;
+}
+
+.leftside div select:hover, .rightside div select:hover, .rightside div textarea:hover {
+  background-color: rgb(186, 234, 186);
+  color:#073875;
+}
+
+.leftside div input{
+  font-size: 14px;
+  width: 13.9em;
+  margin-top: 1.5em;
+  border: 2px solid;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 
 .leftside {
   position: absolute;
-  left: 20%;
+  left: 30%;
 }
 
 .rightside {
   position: absolute;
-  right: 20%;
+  right: 30%;
+}
+
+.submit input{
+  text-align: center;
+  width: 100px;
+  height: 40px;
+  margin-top: 250px;
+  margin-left: 500px;
+  border-radius: 4px;
+  
+  
+  background-color: white;
+  font-size: 15px;
+
+}
+
+.submit input:hover{
+  background-color:#426bba;
+  cursor: pointer;
 }
