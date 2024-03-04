@@ -1,22 +1,11 @@
 function dailyChart(count, question)
 {
-let yCount;
-let yQuestion;
-let chartMax;
-yCount = count;
-yQuestion = question;
-if (yCount >= yQuestion)
-{
-  chartMax = yCount;
-}
-else
-{
-  chartMax = yQuestion;
-}
+let yCount = count;
+let yQuestion = question;
 
 const xValues = ["Total Count", "Total Questions"];
 const yValues = [yCount, yQuestion];
-const barColors = ["Blue", "Grey"];
+const barColors = ["Blue", "Black"];
 
   new Chart("myChart", 
           {
@@ -29,8 +18,9 @@ const barColors = ["Blue", "Grey"];
                   options: 
                   {
                     legend: {display: false},
-                    scales: {yAxes: [{ticks: {min: 0, max: chartMax}}]},
-                    title: {display: true, text: "Daily Report"}  
+                    title: {display: true, text: "Daily Report"}, 
+                    scales: {yAxes: [{ticks:{beginAtZero: true}}]},
+                    plugins: {labels: false}
                   }
            });           
 

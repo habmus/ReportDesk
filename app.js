@@ -125,6 +125,19 @@ app.post("/login", (req, res) => {
 });
 
 
+app.post("/reportrequest", (req, res) => {
+  reportType = req.body.radio1;
+  res.redirect('/pages/Report-Preview.html');
+  
+});
+
+app.get("/api/reportType", (req, res) => {
+  const type = 1;
+  res.toString(type);
+});
+
+
 app.listen(5001, () => {
   console.log("Server is listening on 5001"); // server link localhost:5001
 })
+
