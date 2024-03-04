@@ -1,3 +1,12 @@
+fetch('/api/dailyNumbers')
+  .then(response => response.json())
+  .then(dailyNumbers => dailyChart(dailyNumbers.count, dailyNumbers.question));
+  let params = new URL(document.location).searchParams;
+  let radio = params.get("radio1"); 
+  let date = params.get("date"); 
+  alert(date);
+  
+
 function dailyChart(count, question)
 {
 let yCount = count;

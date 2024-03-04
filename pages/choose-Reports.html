@@ -46,13 +46,14 @@
                 Export/Import</button>
 
             <div>
-                <form action="/reportrequest" method="POST">
+                <form action="/reportrequest" method="GET">
                 <p> Daily <input type="radio" name="radio1" value="1"> </p> 
                 <p> Monthly <input type="radio" name="radio1" value="2"> </p>
                 <p> Yearly <input type="radio" name="radio1" value="3"> </p>
                 <p> Duration <input type="radio" name="radio1" value="4"> </p> 
                 <p> Location <input type="radio" name="radio1" value="5"> </p>
                 <p> Course <input type="radio" name="radio1" value="6"> </p>
+                <p> Date <input type="date" name="date" value=""><p>
                 <button id="report" type="submit">submit</button>
                 </form>   
             </div>

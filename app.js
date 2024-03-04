@@ -125,15 +125,45 @@ app.post("/login", (req, res) => {
 });
 
 
-app.post("/reportrequest", (req, res) => {
-  reportType = req.body.radio1;
-  res.redirect('/pages/Report-Preview.html');
+app.get("/reportrequest", (req, res) => {
+  reportType = parseInt(req.query.radio1);
+  console.log(reportType)
+    switch (reportType)
+    {
+        case 1:
+            res.sendFile('/pages/Report-Preview.html', { root : __dirname});
+            break;
+        case 2:
+            const months = ["January", "February", "March", "April", "May", "June"];
+            const questions = [1000, 1260, 8000, 4021, 5993, 10000];
+            monthlyChart(months, questions);
+            break;
+        case 3:
+            const questionsPerHour = [80,70,6000,5504,100,6000,900,300,1000,700,8000,412,600]
+            yearlyChart (questionsPerHour);
+            break;
+        case 4:
+            durationChart();
+            break;
+        case 5:
+            locationChart();;
+            break;
+        case 6:
+            const mCourse =["CSCE 1301", "CJUS 2600", "CHEM 3452", "SPAN 4321", "BCIS 3610",];
+            const mQuestions =[125, 100, 87, 75, 61,];
+            coursesChart(mCourse, mQuestions); 
+            break;
+        default:
+           alert("error");
+    }
   
 });
 
-app.get("/api/reportType", (req, res) => {
-  const type = 1;
-  res.toString(type);
+app.get("/api/dailyNumbers", (req, res) => {
+  console.log(req.body.radio);
+  const dailyNumbers ={count: 50, question:51};
+  res.json(dailyNumbers);
+  
 });
 
 
