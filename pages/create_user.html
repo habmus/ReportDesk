@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Library Webpage</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" href="/css/create_user.css">
 </head>
+
 <body>
-    <div class="main">
-        <div class="navbar">
-            <div class="icon">
-                 <a class="navbar-brand" href="#"><img src="/images/UNTDlogo.png" alt="UNTDlogo"></a>
-              
-            </div>
+    <header>
+        <nav>
+            <a class="navbar-brand" href="https://www.untdallas.edu"><img src="/images/UNTDlogo.png" alt="UNTDlogo"></a>
+            <a class="navbuttons" href="records.html">Records</a>
+            <a class="navbuttons" href="create_user.html">Users</a>
+            <a class="navbuttons" href="headcount.html">Count</a>
+            <a class="navbuttons" href="Report-Preview.html">Reports</a>
+            <a href="/pages/homepage.html" class="reportdesk">ReportDesk</a>
+        </nav>
+    </header>
 
-            <div class="menu">
-                <ul>
-                    <li><a href="records.html">Records</a></li>
-                    <li><a href="create_user.html">Users</a></li>
-                    
-                    <li><a href="headcount.html">Count</a></li>
 
-                    <li><a href="Report-Preview.html">Reports</a></li>
-                    
-                </ul>
-            </div> 
-            <h1>Report Desk</h1>
 
-            <section>
-                <fieldset>
-                    <legend><b>User Information:</b> </legend>
-                    <p><b>First Name:</b> <input type="text" name="fn"/></p>
-                    <p><b>Last Name:</b><input type="text" name="ln"/></p>
-                    <p><b>Email:</b><input type="text" name="em"/></p>
-                    <p><b>Password:</b><input type="text" name="password"/></p>
-                    <p><b>Role:</b> <select name="select">
+    <section>
+        <div class="button-group">
+            <a href="create_user.html">
+                <div id='5'> Create User</div>
+            </a>
+            <a href="manage_users.html" style="background-color: gray;">
+                <div id='6'> Manage Users</div>
+            </a>
+        </div>
+        <h1>User Information</h1>
+        <fieldset id="userbox">
+            <div class="user-info">
+                <p><b>First Name:</b> <input type="text" name="fn" /></p>
+                <p><b>Last Name:</b><input type="text" name="ln" /></p>
+                <p><b>Email:</b><input type="text" name="em" /></p>
+                <p><b>Password:</b><input type="text" name="password" /></p>
+                <p><b>Role:</b> <select name="select">
                         <option value="0">Select</option>
                         <option value="1">role 1</option>
                         <option value="2">role 2</option>
@@ -41,22 +45,44 @@
                         <option value="5">role 5</option>
                         <option value="6">role 6</option>
                     </select></p>
-                    <fieldset>
-                    <legend><b>Viewable Reports:</b> </legend>
-                    <br/>
-                    <input type="checkbox" name="check1" value="r1"/> Daily
-                    <input type="checkbox" name="check1" value="r2"/> Monthly
-                    <input type="checkbox" name="check1" value="r3"/> Yearly
-                    <input type="checkbox" name="check1" value="r4"/> Duration
-                    <input type="checkbox" name="check1" value="r5"/> Course
-                    <input type="checkbox" name="check1" value="r6"/> Location
-                </fieldset>
-                </fieldset>
-               <p><button id='c'> Create</button></p>
-            </section>
+            </div>
+            <h3><b>Viewable Reports:</b></h3>
+            <div class="viewable-reports">
+
+                <div class="input-div">
+                    <div>
+                        <input type="checkbox" id="daily" name="daily" />
+                        <label for="daily">Daily</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="monthly" name="monthly" />
+                        <label for="monthly">Monthly</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="Yearly" name="Yearly" />
+                        <label for="Yearly">Yearly</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="Duration" name="Duration" />
+                        <label for="Duration">Duration</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="Course" name="Course" />
+                        <label for="Course">Course</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="Location" name="Location" />
+                        <label for="Location">Location</label>
+                    </div>
+                </div>
+            </div>
+                <div style="text-align: center;"><button id='c'> Create</button></div>
+        </fieldset>
+    </section>
 
 
 </body>
+
 </html>
 
 
