@@ -1,12 +1,22 @@
-fetch('/api/dailyNumbers')
-  .then(response => response.json())
-  .then(dailyNumbers => dailyChart(dailyNumbers.count, dailyNumbers.question));
-  let params = new URL(document.location).searchParams;
-  let radio = params.get("radio1"); 
+let params = new URL(document.location).searchParams; 
   let date = params.get("date"); 
-  alert(date);
-  
 
+  let data = {dateValue: date};
+
+  fetch("/api/dailyNumbers", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+
+
+  body: JSON.stringify({data}),
+})
+.then(response => response.json())
+.then(dailyNumbers => dailyChart(dailyNumbers.count, dailyNumbers.question));
+
+
+  
 function dailyChart(count, question)
 {
 let yCount = count;

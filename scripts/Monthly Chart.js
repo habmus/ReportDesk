@@ -1,3 +1,22 @@
+let params = new URL(document.location).searchParams; 
+  let date = params.get("date"); 
+
+  let data = {dateValue: date};
+
+  fetch("/api/dailyNumbers", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+
+
+  body: JSON.stringify({data}),
+})
+.then(response => response.json())
+.then(dailyNumbers => dailyChart(dailyNumbers.count, dailyNumbers.question));
+
+
+
 function monthlyChart(months, questions)
 {
     const xValues = months

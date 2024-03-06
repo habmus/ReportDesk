@@ -131,39 +131,59 @@ app.get("/reportrequest", (req, res) => {
     switch (reportType)
     {
         case 1:
-            res.sendFile('/pages/Report-Preview.html', { root : __dirname});
+            res.sendFile('/pages/Report-Preview-Daily.html', { root : __dirname});
             break;
         case 2:
-            const months = ["January", "February", "March", "April", "May", "June"];
-            const questions = [1000, 1260, 8000, 4021, 5993, 10000];
-            monthlyChart(months, questions);
+            res.sendFile('/pages/Report-Preview-Monthly.html', { root : __dirname});
             break;
         case 3:
-            const questionsPerHour = [80,70,6000,5504,100,6000,900,300,1000,700,8000,412,600]
-            yearlyChart (questionsPerHour);
+            res.sendFile('/pages/Report-Preview-Yearly.html', { root : __dirname});
             break;
         case 4:
-            durationChart();
+            res.sendFile('/pages/Report-Preview-Duration.html', { root : __dirname});
             break;
         case 5:
-            locationChart();;
+            res.sendFile('/pages/Report-Preview-Location.html', { root : __dirname});
             break;
         case 6:
-            const mCourse =["CSCE 1301", "CJUS 2600", "CHEM 3452", "SPAN 4321", "BCIS 3610",];
-            const mQuestions =[125, 100, 87, 75, 61,];
-            coursesChart(mCourse, mQuestions); 
+            res.sendFile('/pages/Report-Preview-Location.html', { root : __dirname}); 
             break;
         default:
-           alert("error");
+            alert("error");
     }
   
 });
 
-app.get("/api/dailyNumbers", (req, res) => {
-  console.log(req.body.radio);
-  const dailyNumbers ={count: 50, question:51};
-  res.json(dailyNumbers);
-  
+app.post("/api/dailyNumbers", express.json(), (req, res) => {
+  const  x = req.body.data.dateValue
+  console.log(x);
+  dbconnect.query("SELECT (SELECT COUNT(*) FROM count WHERE dateOfCount = ?) as countCount, (SELECT COUNT(*) FROM questions WHERE dateofQuestion = ?) as questionCount", [x, x], (error, results) => {
+    if (error) 
+    {
+      console.error('Database query error:', error);
+      res.status(500).send('An error occurred');
+    } else if (results.length > 0)
+    {
+      const dailyNumbers ={count: results[0].countCount, question: results[0].questionCount};
+      res.json(dailyNumbers);  
+    }
+  });
+});
+
+app.post("/api/monthlyNumbers", express.json(), (req, res) => {
+  const  x = req.body.data.dateValue
+  console.log(x);
+  dbconnect.query("SELECT (SELECT COUNT(*) FROM count WHERE dateOfCount = ?) as countCount, (SELECT COUNT(*) FROM questions WHERE dateofQuestion = ?) as questionCount", [x, x], (error, results) => {
+    if (error) 
+    {
+      console.error('Database query error:', error);
+      res.status(500).send('An error occurred');
+    } else if (results.length > 0)
+    {
+      const monthlyNumbers ={count: results[0].countCount, question: results[0].questionCount};
+      res.json(dailyNumbers);  
+    }
+  });
 });
 
 
