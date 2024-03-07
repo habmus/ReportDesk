@@ -3,7 +3,7 @@ let params = new URL(document.location).searchParams;
 
   let data = {dateValue: date};
 
-  fetch("/api/dailyNumbers", {
+  fetch("/api/monthlyNumbers", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",

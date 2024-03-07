@@ -171,17 +171,33 @@ app.post("/api/dailyNumbers", express.json(), (req, res) => {
 });
 
 app.post("/api/monthlyNumbers", express.json(), (req, res) => {
-  const  x = req.body.data.dateValue
-  console.log(x);
-  dbconnect.query("SELECT (SELECT COUNT(*) FROM count WHERE dateOfCount = ?) as countCount, (SELECT COUNT(*) FROM questions WHERE dateofQuestion = ?) as questionCount", [x, x], (error, results) => {
+  const  x = req.body.data.dateValue;
+  let cleanDate = x.slice(0,7);
+  cleanYear = cleanDate.substring(0,4);
+  cleanMonth = cleanDate.substring(5,7);
+  console.log(cleanMonth);
+  const date = new Date(cleanYear,cleanMonth);
+
+ const dateArray = [];
+for(let i = 0; i < 6; i++)
+{   
+    date.setMonth(date.getMonth()-1);
+    dateISO =(date.toISOString());
+    saveDate = dateISO.slice(0,7);
+    dateArray.push(saveDate);
+}
+console.log(dateArray)
+
+  dbconnect.query("SELECT (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month1, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month2, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month3, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month4, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month5, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month6;", [dateArray[0] +'%', dateArray[1]+'%', dateArray[2]+'%', dateArray[3]+'%', dateArray[4]+'%', dateArray[5]+'%'], (error, results) => {
     if (error) 
     {
       console.error('Database query error:', error);
       res.status(500).send('An error occurred');
     } else if (results.length > 0)
     {
+      console.log(results[0])
       const monthlyNumbers ={count: results[0].countCount, question: results[0].questionCount};
-      res.json(dailyNumbers);  
+      res.json(monthlyNumbers);  
     }
   });
 });
