@@ -188,15 +188,19 @@ for(let i = 0; i < 6; i++)
 }
 console.log(dateArray)
 
-  dbconnect.query("SELECT (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month1, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month2, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month3, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month4, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month5, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as Month6;", [dateArray[0] +'%', dateArray[1]+'%', dateArray[2]+'%', dateArray[3]+'%', dateArray[4]+'%', dateArray[5]+'%'], (error, results) => {
+  dbconnect.query("SELECT (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as ?, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as ?, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as ?, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as ?, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as ?, (SELECT COUNT(*) FROM questions WHERE dateofQuestion LIKE ?) as ?;", [dateArray[0] +'%',dateArray[0], dateArray[1]+'%', dateArray[1], dateArray[2]+'%', dateArray[2], dateArray[3]+'%', dateArray[3], dateArray[4]+'%', dateArray[4], dateArray[5]+'%', dateArray[5]], (error, results) => {
     if (error) 
     {
       console.error('Database query error:', error);
       res.status(500).send('An error occurred');
     } else if (results.length > 0)
     {
-      console.log(results[0])
-      const monthlyNumbers ={count: results[0].countCount, question: results[0].questionCount};
+      
+      console.log(Object.keys(results[0]))
+      months = Object.keys(results[0])
+      console.log(Object.values(results[0]))
+      monthValue = Object.values(results[0])
+      const monthlyNumbers = {months, monthValue};
       res.json(monthlyNumbers);  
     }
   });
