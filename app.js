@@ -116,7 +116,7 @@ app.post("/login", (req, res) => {
       res.status(500).send('An error occurred');
     } else if (results.length > 0) {
       // If password match
-      res.redirect('/pages/homepage.html'); // go to homepage
+      res.redirect('/pages/records.html'); // go to homepage
     } else {
       // If password dont match
       res.status(401).send('Incorrect Email/Password');// error code about incorrect credentials
