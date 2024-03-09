@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | ReportDesk</title>
     <link rel="stylesheet" href="/css/login.css">
+    <script type="text/javascript" src="/scripts/Password Checker.js" defer></script>
 </head>
 
 <body>
@@ -30,9 +31,11 @@
                     <input type="password" id="password" name="password">
                 </div>
                 <button id="loginbutton" type="submit">Login</button>
+                <p id="target"></p>
                 <br>
                 <a href="/pages/password-reset/page1.html">Forgot Password?</a>
             </form>
+            <button onclick="fun1()" id="checker">Check Password</button>
         </fieldset>
     </main>
     <footer>
