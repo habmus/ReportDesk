@@ -1,49 +1,40 @@
-const express = require("express") // import express
-const mysql = require("mysql") // import mysql
-const path = require('path') //path finder
-const app = express(); //running express server
+const express = require("express");
+const mysql = require("mysql");
+const path = require('path');
+const app = express();
 const bodyParser = require('body-parser');
-const crypto = require("crypto"); //
+const crypto = require("crypto");
 const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer"); // for sending mails
-
-
-// Inside your route
+const nodemailer = require("nodemailer");
 
 require('dotenv').config();
 
-const dbconnect = mysql.createConnection({ // assigning var to mysql function
+const dbconnect = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
-})
+});
 
 dbconnect.connect((error) => {
-  if (error) console.log(error) //if error print error
-  else console.log("Connected to MYSQL DB") // else prnt this mssg in node terminal
-})
+  if (error) console.log(error);
+  else console.log("Connected to MYSQL DB");
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Serve static files from the "pages" directory
 app.use('/pages', express.static(path.join(__dirname, 'pages')));
-
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
 app.use('/css', express.static(path.join(__dirname, 'css')));
-
 app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + '/index.html'); //send 
+  res.sendFile(__dirname + '/index.html');
 });
 
-
 app.post("/password-reset", async (req, res) => {
-  const email = req.body.email; //grab email from html 
+  const email = req.body.email;
   console.log('Email:', email);
 
   dbconnect.query('SELECT * FROM Users WHERE email = ?', [email], async (error, results) => {
@@ -51,40 +42,38 @@ app.post("/password-reset", async (req, res) => {
       console.error('Database query error:', error);
       res.status(500).send('An error occurred');
     } else if (results.length > 0) {
-      const resetToken = crypto.randomBytes(20).toString('hex'); //create random Token
+      const resetToken = crypto.randomBytes(20).toString('hex');
       const hash = await bcrypt.hash(resetToken, 10);
 
-      // created password_reset table in DB
-
-      const deleteExistingTokens = 'DELETE FROM password_resets WHERE email = ?'; //remove current token
+      const deleteExistingTokens = 'DELETE FROM password_resets WHERE email = ?';
       dbconnect.query(deleteExistingTokens, [email], (error, results) => {
-        if (error) console.log(error); // print error if it wasnt able to delele
+        if (error) console.log(error);
       });
 
-      const insertToken = 'INSERT INTO password_resets (email, token) VALUES (?, ?)';
-      dbconnect.query(insertToken, [email, hash], (error, results) => { //insetr newest token in token field 
+      const insertToken = 'INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))';
+      console.log('Hashed token:', hash);
+      dbconnect.query(insertToken, [email, hash], (error, results) => {
         if (error) {
           console.log(error);
           res.status(500).send('An error occurred during token generation');
         } else {
           const transporter = nodemailer.createTransport({
-            host: 'smtp.office365.com', //outlook email
-            port: 587,
-            secure: false, // true for 465, false for other ports
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
             auth: {
-              user: process.env.EMAIL, // stored in .env
-              pass: process.env.EMAIL_PASSWORD // host email stored in .env
+              user: process.env.EMAIL,
+              pass: process.env.EMAIL_PASSWORD
             }
           });
 
-          // sending reset link
           const mailOptions = {
-            from: process.env.EMAIL, // sender
-            to: email, // reciever
-            subject: 'Password Reset', // Subject line
-            html: `<p>Click <a href="http://localhost:5001/pages/password-reset/page2.html?token=${resetToken}&email=${email}">here</a> to reset your password</p>` //email message
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Password Reset Requested',
+            html: `<p>Hi ${email}!, you have requested a password reset</p><p>Click <a href="http://localhost:5001/pages/password-reset/page2.html?token=${resetToken}&email=${email}">here</a> to reset your password</p>`
           };
-          // error handling
+
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
               console.error("Error sending email:", error);
@@ -97,29 +86,100 @@ app.post("/password-reset", async (req, res) => {
         }
       });
     } else {
-      res.status(401).send('Email not found'); //print if email is not in the DB
+      res.status(401).send('Email not found');
     }
   });
 });
 
+app.post("/set-new-password", async (req, res) => {
+  const { token, email, newPassword } = req.body;
+  console.log('Received token:', token);
+  console.log('Received email:', email);
+  console.log('Received newPassword:', newPassword);
+
+  try {
+    const getTokenQuery = 'SELECT token, expires_at FROM password_resets WHERE email = ?';
+    dbconnect.query(getTokenQuery, [email], async (error, results) => {
+      if (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('An error occurred');
+      } else if (results.length > 0) {
+        const storedToken = results[0].token;
+        const expiredAt = results[0].expires_at;
+        console.log('Stored token:', storedToken);
+        console.log('Expired at:', expiredAt);
+
+        const currentTime = new Date();
+        if (currentTime > expiredAt) {
+          console.log('Token has expired');
+          res.status(401).send('Token has expired');
+        } else {
+          const isTokenValid = await bcrypt.compare(token, storedToken);
+          console.log('Token validity:', isTokenValid);
+
+          if (isTokenValid) {
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            console.log('Hashed new password:', hashedPassword);
+
+            const updatePasswordQuery = 'UPDATE Users SET password = ? WHERE email = ?';
+            dbconnect.query(updatePasswordQuery, [hashedPassword, email], (error, results) => {
+              if (error) {
+                console.error('Database query error:', error);
+                res.status(500).send('An error occurred');
+              } else {
+                console.log('Password updated successfully');
+
+                const deleteTokenQuery = 'DELETE FROM password_resets WHERE email = ?';
+                dbconnect.query(deleteTokenQuery, [email], (error, results) => {
+                  if (error) {
+                    console.error('Database query error:', error);
+                  } else {
+                    console.log('Token deleted successfully');
+                  }
+                });
+
+                res.status(200).send('Password reset successful');
+              }
+            });
+          } else {
+            console.log('Invalid token');
+            res.status(401).send('Invalid token');
+          }
+        }
+      } else {
+        console.log('No token found for the provided email');
+        res.status(401).send('Invalid or expired token');
+      }
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('An error occurred');
+  }
+});
+
 
 app.post("/login", (req, res) => {
-  const email = req.body.email; //gets email from login email input
-  const password = req.body.password; //gets password from login password input
+  const email = req.body.email;
+  const password = req.body.password;
 
-  console.log('Email:', email);
-  console.log('Password:', password);
-
-  dbconnect.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password], (error, results) => {
+  dbconnect.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
     if (error) {
       console.error('Database query error:', error);
       res.status(500).send('An error occurred');
     } else if (results.length > 0) {
-      // If password match
-      res.redirect('/pages/records.html'); // go to homepage
+      const user = results[0];
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (isPasswordValid) {
+        // Password is correct, perform login logic
+        res.redirect('/pages/records.html');
+      } else {
+        // Password is incorrect
+        res.status(401).send('Incorrect Email/Password');
+      }
     } else {
-      // If password dont match
-      res.status(401).send('Incorrect Email/Password');// error code about incorrect credentials
+      // User not found
+      res.status(401).send('Incorrect Email/Password');
     }
   });
 });
