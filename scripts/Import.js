@@ -2,17 +2,17 @@ const fs=require('fs');
 const { parse } = require("csv-parse");
 const mysql = require('mysql');
 const { connect } = require('http2');
-const { error, log } = require('console');
+const { error } = require('console');
+ 
+var data = [];
+var index=null;
 
-
-const data = [];
-
-function report(loc, dur, co, not,da) {
-  this.location = loc;
-  this.duration = dur;
-  this.course = co;
-  this.notes = not;
-  this.date=da;
+function report(l,t,c,n,d) {
+  this.location = l;
+  this.duration = t;
+  this.course = c;
+  this.notes =n;
+  this.date=d;
 }
 
 let connection = mysql.createConnection({
@@ -26,26 +26,6 @@ connection.connect((error) => {
   if (error)  console.error(error);
   else return console.log("Connnected to the Database")});
 
- function getID(array,i){
-  var t=null;
-  var tf=false;
-
-  return new Promise((resolve, reject) => {
-    connection.query("SELECT locationID FROM locations WHERE location= '" + array[i].location+"'", function (err, result, fields) {
-      if (err) throw err;
-      t=result[0].locationID;
-      tf=true;
-      
-  })
-      if(tf=true){
-        console.log(t+"here");
-        resolve(t);
-      }
-      else{
-        reject("Didnt get anything");
-      }
-    }
-  )}
 
 function getData(file){
   var i=0;
@@ -53,8 +33,11 @@ function getData(file){
   fs.createReadStream(file)
   .pipe(parse({ delimiter: ",", from_line: 2}))
   .on("data", function (row) {
-      r=row;
-      let t= new report(r[0],r[1],r[2],r[3],r[4]);
+    r=row;
+    var date = r[4];
+    date = date.split("/").reverse().join("/");
+    console.log(date);
+    let t= new report(r[0],r[1],r[2],r[3],date);
     data[i]=t;
     i=i+1;
   })
@@ -66,27 +49,63 @@ function getData(file){
   });
 }
 
-  async function test(array){
-    var t=0;
+async function test(array){
+  data=array;
   if(array[0]==null){
-   return console.log("The file is empty")
+    return console.log("The file is empty")
   }else
   {
-     for( i=0; i< array.length;i=i+1){
-      t = await getID(array,i);
-      array[i].location=t;
-      console.log(t);
-     }
+    for( i=0; i< array.length;i=i+1){
+      try{
+        index=i;
 
-     for( i=0; i< array.length;i=i+1){
-      console.log(array[i].location);
-    let sql = `INSERT into Questions(questionID,categoryID,locationID,duration,courseID,notes,dateOfQuestion,userID)
-    VALUES(null,null,`+ array[i].location +`,` + array[i].duration +`,` +array[i].course + `,` + array[i].notes + `,`+array[i].date +`,null)`;
-    
+        const lid= new Promise (async function(resolve ){
+          await connection.query("SELECT locationID FROM locations WHERE location=  ?",[data[index].location], function (err, result, fields) {
+           if (err) reject(err);
+          else 
+          resolve(result[0].locationID);
+          }); 
+        });
+       
+        const cid= new Promise(async function (resolve){ await connection.query("SELECT courseID FROM courses WHERE courseCode= ?" ,[data[index].course],function(err,result,fields){
+          if(err) reject (err);
+          else resolve(result[0].courseID)
+        })
+      });
+
+      const did= new Promise(async function (resolve,reject){ await connection.query("SELECT durationID FROM durations WHERE duration= ?" ,[data[index].duration],function(err,result,fields){
+        if(err) reject (err);
+        else resolve(result[0].durationID);
+      })
+    });
+        const sql = `INSERT into Questions(questionID,categoryID,locationID,durationID,courseID,notes,dateOfQuestion,userID) Values (null,null,?,?,?,?,?,null)`;
+  
+
+  var r1, r2, r3;
+  var x=0;
+ await lid
+          .then(async function (result) {
+            r1=result;
+          })
+          .then( async function (){
+            r2 = await cid;
+          })
+          .then(async function() {
+            r3 =await did;
+          })
+          .then(async function(){
+           connection.query(sql,[r1,r3,r2,data[x].notes,data[x].date]);
+           x=x+1;
+          })
+        .catch(err);{
+          console.log(error);
+        }
+      
+      } catch{
+        console.log(error);
+      }
     } 
     
-  
   }
 }
-
   getData('Template.csv');
