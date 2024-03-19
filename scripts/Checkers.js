@@ -2,8 +2,9 @@
 
 class Check{
     
-    constructor(password){
+    constructor(password,email){
         this.password = password;
+        this.email = email;
        
     }
     
@@ -62,6 +63,22 @@ class Check{
             }      
         }
 
+        eChecker(){
+    
+            var em =this.email;
+            var  con1= /(@gmail.com|@yahoo.com|@untdallas.edu)/g
+           
+         
+            
+             if(con1.test(em))
+                    {
+                        return console.log("Email Accepted")
+                    }
+                    else {
+                       
+                        return console.log("Invalid Email");
+                    }
+                }
 
       
 }  
@@ -72,9 +89,12 @@ class Check{
 function fun1(){
     
     const p = document.getElementById('password');
+    const e = document.getElementById('email');
     const t = document.getElementById('target');
+    const t2 = document.getElementById('target2');
 
-    const ch = new Check(p.value);
+    const ch = new Check(p.value,e.value);
     console.log(ch);
     t.innerHTML = ch.pChecker(); 
+    t1.innerHTML = ch.eChecker(); 
 }
