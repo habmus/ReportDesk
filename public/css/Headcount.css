@@ -1,0 +1,48 @@
+html {
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5)50%, rgba(0, 0, 0, 0.5)50%), url(/images/jaghead.png);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+	
+}
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+h1 {
+	color: black;
+	font-size: 28px;
+	font-weight: bold;
+	font-family: Arial, sans-serif;
+	text-align: center;
+}
+section {
+	display: flex;
+	justify-content: space-around;
+}
+h3 {
+	color:black;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	font-family: Arial, sans-serif;
+}
+textarea {
+	padding: 25px;
+	box-sizing: border-box;
+	border: 2px solid black;
+	border-radius: 4px;
+	width: 20%;
+}
+button {
+	background-color: black;
+    cursor: pointer;
+	position: relative;
+	height: 40px;
+	top: 50%;
+    color: white;
+    padding: 15px 35px;
+    display: inline-block;
+}

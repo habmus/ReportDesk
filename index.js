@@ -1,11 +1,11 @@
 const express = require("express");
 const mysql = require("mysql");
-const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const models = require("./models/queries")
 
 require('dotenv').config();
 
@@ -23,11 +23,8 @@ dbconnect.connect((error) => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/pages', express.static(path.join(__dirname, 'pages')));
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
+app.use(express.static("public"));
+
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -191,22 +188,22 @@ app.get("/reportrequest", (req, res) => {
     switch (reportType)
     {
         case 1:
-            res.sendFile('/pages/Report-Preview-Daily.html', { root : __dirname});
+            res.sendFile('public/pages/Report-Preview-Daily.html', { root : __dirname});
             break;
         case 2:
-            res.sendFile('/pages/Report-Preview-Monthly.html', { root : __dirname});
+            res.sendFile('public/pages/Report-Preview-Monthly.html', { root : __dirname});
             break;
         case 3:
-            res.sendFile('/pages/Report-Preview-Yearly.html', { root : __dirname});
+            res.sendFile('public/pages/Report-Preview-Yearly.html', { root : __dirname});
             break;
         case 4:
-            res.sendFile('/pages/Report-Preview-Duration.html', { root : __dirname});
+            res.sendFile('public/pages/Report-Preview-Duration.html', { root : __dirname});
             break;
         case 5:
-            res.sendFile('/pages/Report-Preview-Location.html', { root : __dirname});
+            res.sendFile('public/pages/Report-Preview-Location.html', { root : __dirname});
             break;
         case 6:
-            res.sendFile('/pages/Report-Preview-Location.html', { root : __dirname}); 
+            res.sendFile('public/pages/Report-Preview-Location.html', { root : __dirname}); 
             break;
         default:
             alert("error");
@@ -255,6 +252,8 @@ console.log(dateArray)
       res.status(500).send('An error occurred');
     } else if (results.length > 0)
     {
+
+      
       
       console.log(Object.keys(results[0]))
       months = Object.keys(results[0])
@@ -302,5 +301,6 @@ app.post("/api/yearlyNumbers", express.json(), (req, res) => {
 
 app.listen(5001, () => {
   console.log("Server is listening on 5001"); // server link localhost:5001
+  console.log(models.getName());
 })
 

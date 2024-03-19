@@ -61,20 +61,20 @@ async function test(array){
 
         const lid= new Promise (async function(resolve ){
           await connection.query("SELECT locationID FROM locations WHERE location=  ?",[data[index].location], function (err, result, fields) {
-           if (err) reject(err);
+           if (err);
           else 
           resolve(result[0].locationID);
           }); 
         });
        
         const cid= new Promise(async function (resolve){ await connection.query("SELECT courseID FROM courses WHERE courseCode= ?" ,[data[index].course],function(err,result,fields){
-          if(err) reject (err);
+          if (err);
           else resolve(result[0].courseID)
         })
       });
 
       const did= new Promise(async function (resolve,reject){ await connection.query("SELECT durationID FROM durations WHERE duration= ?" ,[data[index].duration],function(err,result,fields){
-        if(err) reject (err);
+        if(err);
         else resolve(result[0].durationID);
       })
     });
