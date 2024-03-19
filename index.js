@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const models = require("./models/queries")
+//const models = require("./models/queries")
 
 require('dotenv').config();
 
@@ -301,6 +301,6 @@ app.post("/api/yearlyNumbers", express.json(), (req, res) => {
 
 app.listen(5001, () => {
   console.log("Server is listening on 5001"); // server link localhost:5001
-  console.log(models.getName());
+  //console.log(models.getName());
 })
 
