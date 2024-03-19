@@ -1,5 +1,4 @@
-exports.yearlyReportview = (targetYear) =>
-{
+exports.yearlyReportview = (targetYear) =>{
 yearOnly=targetYear;
     dbconnect.query("SELECT" +
 "(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=8) as hr8am," +
@@ -25,5 +24,7 @@ yearOnly=targetYear;
       console.log(results)
       
     
-    return
-};
+      return(results);
+    }
+}
+}
