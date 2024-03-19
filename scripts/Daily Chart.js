@@ -1,6 +1,5 @@
 let params = new URL(document.location).searchParams; 
   let date = params.get("date"); 
-
   let data = {dateValue: date};
 
   fetch("/api/dailyNumbers", {

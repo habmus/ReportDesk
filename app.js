@@ -266,6 +266,39 @@ console.log(dateArray)
   });
 });
 
+app.post("/api/yearlyNumbers", express.json(), (req, res) => {
+  const  targetYear = req.body.data.dateValue;
+  let yearOnly = targetYear.slice(0,4);
+  console.log(yearOnly);
+  dbconnect.query("SELECT" +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=8) as hr8am," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=9) as hr9am," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=10) as hr10am," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=11) as hr11am," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=12) as hr12pm," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=13) as hr1pm," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=14) as hr2pm," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=15) as hr3pm," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=16) as hr4pm," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=17) as hr5pm," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=18) as hr6pm," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=19) as hr7pm," +
+"(SELECT SUM(headCount) FROM count WHERE EXTRACT(year from dateofCount)=? AND EXTRACT(HOUR from dateOfCount)=20) as hr8pm;",
+[yearOnly,yearOnly,yearOnly,yearOnly,yearOnly,yearOnly,yearOnly,yearOnly,yearOnly,yearOnly,yearOnly,yearOnly,yearOnly], (error, results) => {
+    if (error) 
+    {
+      console.error('Database query error:', error);
+      res.status(500).send('An error occurred');
+    } else if (results.length > 0)
+    {
+      console.log(results)
+      
+      yearlyValues = Object.values(results[0])
+      res.json(yearlyValues);
+    }
+  });
+});
+
 
 app.listen(5001, () => {
   console.log("Server is listening on 5001"); // server link localhost:5001
