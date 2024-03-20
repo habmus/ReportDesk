@@ -298,6 +298,17 @@ app.post("/api/yearlyNumbers", express.json(), (req, res) => {
   });
 });
 
+app.get("/coursecodes", (req, res) => {
+  dbconnect.query('SELECT courseCode FROM Courses', (error, results, fields) => {
+    if (error) {
+      console.error('Error fetching data from MySQL: ', error);
+      res.status(500).send('An error occurred');
+      return;
+    }
+    else
+    res.json(results);
+  });
+});
 
 app.listen(5001, () => {
   console.log("Server is listening on 5001"); // server link localhost:5001
