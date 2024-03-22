@@ -3,9 +3,9 @@ const { parse } = require("csv-parse");
 const mysql = require('mysql');
 const { connect } = require('http2');
 const { error } = require('console');
- 
+const { resolve4 } = require('dns');
+
 var data = [];
-var index=null;
 
 function report(l,t,c,n,d) {
   this.location = l;
@@ -26,7 +26,6 @@ connection.connect((error) => {
   if (error)  console.error(error);
   else return console.log("Connnected to the Database")});
 
-
 function getData(file){
   var i=0;
   let r=0;
@@ -34,20 +33,21 @@ function getData(file){
   .pipe(parse({ delimiter: ",", from_line: 2}))
   .on("data", function (row) {
     r=row;
-    var date = r[4];
-    date = date.split("/").reverse().join("/");
-    console.log(date);
-    let t= new report(r[0],r[1],r[2],r[3],date);
+    var d=r[4];
+    d= d.split("/").reverse();
+    d= d[0] + "-"+d[2] +"-"+d[1];
+    let t= new report(r[0],r[1],r[2],r[3], d);
     data[i]=t;
     i=i+1;
   })
   .on("error", function (error) {
-    console.log(error.message);
+    console.log(error);
   })
   .on("end", function () {
     test(data);
   });
 }
+
 
 async function test(array){
   data=array;
@@ -57,29 +57,29 @@ async function test(array){
   {
     for( i=0; i< array.length;i=i+1){
       try{
-        index=i;
-
         const lid= new Promise (async function(resolve ){
-          await connection.query("SELECT locationID FROM locations WHERE location=  ?",[data[index].location], function (err, result, fields) {
-           if (err);
-          else 
-          resolve(result[0].locationID);
+          await connection.query("SELECT locationID FROM locations WHERE location=  ? " , [data[i].location], function (err, result, fields) {
+           if (err) console.log(err);
+          else resolve(result[0].locationID);
           }); 
         });
        
-        const cid= new Promise(async function (resolve){ await connection.query("SELECT courseID FROM courses WHERE courseCode= ?" ,[data[index].course],function(err,result,fields){
-          if (err);
-          else resolve(result[0].courseID)
+        const cid= new Promise(async function (resolve){ 
+          await connection.query("SELECT courseID FROM courses WHERE courseCode= ? " ,[data[i].course],function(err,result,fields){
+          if(err) console.log(err);
+          else resolve(result[0].courseID);
         })
       });
 
-      const did= new Promise(async function (resolve,reject){ await connection.query("SELECT durationID FROM durations WHERE duration= ?" ,[data[index].duration],function(err,result,fields){
-        if(err);
+      const did= new Promise(async function (resolve){ await connection.query("SELECT durationID FROM durations WHERE duration= ?" ,[data[i].duration],function(err,result,fields){
+        if(err)  console.log(err);
         else resolve(result[0].durationID);
       })
     });
-        const sql = `INSERT into Questions(questionID,categoryID,locationID,durationID,courseID,notes,dateOfQuestion,userID) Values (null,null,?,?,?,?,?,null)`;
-  
+    
+    
+  const sql = `INSERT into Questions(questionID,categoryID,locationID,durationID,courseID,notes,dateOfQuestion,userID) Values (null,null,?,?,?,?,?,null)`;
+
 
   var r1, r2, r3;
   var x=0;
@@ -94,18 +94,18 @@ async function test(array){
             r3 =await did;
           })
           .then(async function(){
-           connection.query(sql,[r1,r3,r2,data[x].notes,data[x].date]);
+          connection.query(sql,[r1,r3,r2,data[x].notes,data[x].date]);
            x=x+1;
           })
-        .catch(err);{
-          console.log(error);
-        }
+          .catch(err);{
+            console.log(err);
+          }
       
       } catch{
         console.log(error);
       }
     } 
-    
   }
 }
+
   getData('Template.csv');
