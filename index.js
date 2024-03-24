@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-//const models = require("./models/queries")
+const models = require("./models/db")
 
 require('dotenv').config();
 
@@ -27,7 +27,7 @@ app.use(express.static("public"));
 
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/public/pages/index.html');
 });
 
 app.post("/password-reset", async (req, res) => {
@@ -211,20 +211,13 @@ app.get("/reportrequest", (req, res) => {
   
 });
 
-app.post("/api/dailyNumbers", express.json(), (req, res) => {
+app.post("/api/dailyNumbers", express.json(), async (req, res) => {
   const  x = req.body.data.dateValue
   console.log(x);
-  dbconnect.query("SELECT (SELECT COUNT(*) FROM count WHERE dateOfCount = ?) as countCount, (SELECT COUNT(*) FROM questions WHERE dateofQuestion = ?) as questionCount", [x, x], (error, results) => {
-    if (error) 
-    {
-      console.error('Database query error:', error);
-      res.status(500).send('An error occurred');
-    } else if (results.length > 0)
-    {
-      const dailyNumbers ={count: results[0].countCount, question: results[0].questionCount};
-      res.json(dailyNumbers);  
-    }
-  });
+  
+  let dailyNumbers =  models.dailyReportView(x)
+  console.log(dailyNumbers)
+  res.json(dailyNumbers);  
 });
 
 app.post("/api/monthlyNumbers", express.json(), (req, res) => {
