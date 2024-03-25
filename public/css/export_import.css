@@ -1,0 +1,35 @@
+html {
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5)50%, rgba(0, 0, 0, 0.5)50%), url(/images/jaghead.png);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+  }
+  
+  body{
+    margin: 0px;
+  }
+  h2{color: #0f0000;
+    text-align: center;}
+
+
+div{ display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+div img{
+    width: 300px;
+    height: 200px;
+    border: rgb(5, 5, 5);
+    border-radius: 13px;
+    box-shadow: 4px 7px 7px 0px #01a543;
+    cursor: pointer;
+    margin: 20px;
+    transition: 400ms;
+}
+div img:hover{
+    filter: grayscale(1);
+    transform: scale(1.03);
+
+}

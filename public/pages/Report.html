@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ReportType</title>
+    <link rel="stylesheet" type="text/css" href="/css/report.css">
+</head>
+<body>
+    <h1>Report Desk</h1>
+
+    <h2>Select a Report Type</h2>
+    <div>
+        <img src="/images/daily.webp" alt="daily"/> 
+        <img src="/images/monthly.png" alt="monthly">
+        <img src="/images/yearly.png" alt="yearly">
+        <img src="/images/duration.webp" alt="duration">
+        <img src="/images/course.webp" alt="course">
+        <img src="/images/location.png" alt="location">
+    
+
+
+    </div>
+
+    <div>
+        <form action="/reportrequest" method="GET">
+        <p> Daily <input type="radio" name="radio1" value="1"> </p> 
+        <p> Monthly <input type="radio" name="radio1" value="2"> </p>
+        <p> Yearly <input type="radio" name="radio1" value="3"> </p>
+        <p> Duration <input type="radio" name="radio1" value="4"> </p> 
+        <p> Course <input type="radio" name="radio1" value="5"> </p>
+        <p> Location <input type="radio" name="radio1" value="6"> </p>
+        <input type="date">
+        <button id="report" type="view">View</button>
+        </form>   
+    </div>
+
+    <div>
+        <p></p><a href="Export_Import.html">Export_Import</a><p></p>
+    </div>
+</body>
+
+</html>

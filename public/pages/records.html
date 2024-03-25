@@ -4,7 +4,6 @@
 <head>
   <title>Records</title>
   <link rel="stylesheet" type="text/css" href="/css/records.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -87,7 +86,9 @@
 
         <div class="cour">
     <select name="coursecodedrop" id="coursecodedrop">
+      <option value="select">Select a course code</option>
       <option value="" disabled selected>Course Code(Optional)</option>
+
     </select>
 
     </div>
@@ -98,6 +99,7 @@
     
     </div> 
 
+   
     </div>
 
     <div class="submit">
@@ -117,22 +119,6 @@
 <footer>
   <p>University of North Texas at Dallas</p>
 </footer>
-
-
-<script>
-  $(document).ready(function() {
-    // fetch course codes from the server
-    $.get('/coursecodes', function(data) {
-      //add fetched course codes below the default option
-      data.forEach(function(course) {
-        $('#coursecodedrop').append($('<option>', {
-          value: course.courseCode,
-          text: course.courseCode
-        }));
-      });
-    });
-  });
-</script>
 
 </body>
 
