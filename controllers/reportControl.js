@@ -41,7 +41,7 @@ export const location_report = (async (req,res)=> {
   const targetYear = "2024-03-24"
   let year = targetYear.slice(0,4)
   const reportLocation = await getLocationReport(year)
-    res.send(reportLocation)
+    res.render("Report-Preview-Location.ejs", {reportLocation})
   })
 
 export const duration_report = (async (req,res)=> {
