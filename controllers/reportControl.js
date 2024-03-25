@@ -48,12 +48,18 @@ export const duration_report = (async (req,res)=> {
   const targetYear = "2024-03-24"
   let year = targetYear.slice(0,4)
   const reportDuration = await(getDurationReport(year))
-    res.send(reportDuration)
+    res.render("Report-Preview-Duration.ejs", {reportDuration})
   })
 
 export const courses_report = (async (req,res)=> {
-  const targetYear = "2024-03-24"
+  const targetYear = "2022-03-24"
   let year = targetYear.slice(0,4)
   const reportCourses = await(getCoursesReport(year))
-    res.send(reportCourses)
+  
+  const courses = []
+  const questions = []
+  Object.entries(reportCourses).forEach(([key]) =>{courses.push(reportCourses[key].courseCode), questions.push(reportCourses[key].numberOfQuestions)})
+  console.log(courses)
+  console.log(questions)
+  res.render("Report-Preview-Courses.ejs",{courses,questions})
   })
