@@ -3,12 +3,14 @@ import { getDailyReport, getMonthlyReport, getYearlyReport, getLocationReport, g
 
 
 export const daily_report = (async (req,res)=> {
-    const reportDaily = await getDailyReport("2024-03-24")
+    const userdate = req.query.date
+    const reportDaily = await getDailyReport(userdate)
     res.render("Report-Preview-Daily.ejs",{reportDaily})
   })
 
 export const monthly_report = (async (req,res)=> {
-  const  cleanDate = "2024-03-24"
+  const userdate = req.query.date
+  const  cleanDate = userdate
   //let cleanDate = rawdate.slice(0,7)
   let cleanYear = cleanDate.substring(0,4)
   let cleanMonth = cleanDate.substring(5,7)
@@ -31,31 +33,34 @@ export const monthly_report = (async (req,res)=> {
   })
 
 export const yearly_report = (async (req,res)=> {
-    const targetYear = "2024-03-24"
+    const userdate = req.query.date
+    const targetYear = userdate
     let year = targetYear.slice(0,4)
     const reportYearly = await getYearlyReport(year)
     res.render("Report-Preview-Yearly.ejs",{reportYearly})
   })
 
 export const location_report = (async (req,res)=> {
-  const targetYear = "2024-03-24"
+  const userdate = req.query.date
+  const targetYear = userdate
   let year = targetYear.slice(0,4)
   const reportLocation = await getLocationReport(year)
     res.render("Report-Preview-Location.ejs", {reportLocation})
   })
 
 export const duration_report = (async (req,res)=> {
-  const targetYear = "2024-03-24"
+  const userdate = req.query.date
+  const targetYear = userdate
   let year = targetYear.slice(0,4)
   const reportDuration = await(getDurationReport(year))
     res.render("Report-Preview-Duration.ejs", {reportDuration})
   })
 
 export const courses_report = (async (req,res)=> {
-  const targetYear = "2022-03-24"
+  const userdate = req.query.date
+  const targetYear = userdate 
   let year = targetYear.slice(0,4)
   const reportCourses = await(getCoursesReport(year))
-  
   const courses = []
   const questions = []
   Object.entries(reportCourses).forEach(([key]) =>{courses.push(reportCourses[key].courseCode), questions.push(reportCourses[key].numberOfQuestions)})
