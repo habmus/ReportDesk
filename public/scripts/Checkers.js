@@ -1,5 +1,11 @@
 
-
+class User {
+    constructor(name, age, email) {
+      this.name = name;
+      this.age = age;
+      this.email = email;
+    }}
+    
 class Check{
     
     constructor(password,email){
@@ -95,5 +101,5 @@ function fun1(){
     const ch = new Check(p.value,e.value);
     console.log(ch);
     t.innerHTML = ch.pChecker(); 
-    t1.innerHTML = ch.eChecker(); 
+    t2.innerHTML = ch.eChecker(); 
 }
