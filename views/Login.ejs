@@ -20,7 +20,7 @@
     <main id="Loginbox">
         <h2 id="Logintext">Login</h2>
         <fieldset id="loginbox">
-            <form action="/login" method="POST">
+            <form action="/users/login" method="POST">
                 <div class="email-div">
                     <label id="emailtext" for="email">Email:</label>
                     <input type="text" id="email" name="email">
@@ -32,11 +32,14 @@
                 </div>
                 <button id="loginbutton" type="submit">Login</button>
                 <p id="target"></p>
-                <p id="target2"></p>
+
+                
+                <p id="traget2"></p>
                 <br>
-                <a href="/pages/password-reset/page1.html">Forgot Password?</a>
+                <a href="/users/password-reset">Forgot Password?</a>
             </form>
             <button onclick="fun1()" id="checker">Check Password</button>
+            <p> <%= Date() %> </p>
         </fieldset>
     </main>
     <footer>

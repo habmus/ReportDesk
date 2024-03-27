@@ -16,14 +16,11 @@
 
     <a class="navbar-brand" href="https://www.untdallas.edu"><img src="/images/UNTDlogo.png" alt="UNTDlogo"></a>
 
-    <a class="navbuttons" href="records.html">Records</a>
-    <a class="navbuttons" href="create_user.html">Users</a>
-
-    <a class="navbuttons" href="headcount.html">Count</a>
-
-    <a class="navbuttons" href="Reports.html">Reports</a>
-
-    <a href="/pages/homepage.html" class="reportdesk">ReportDesk</a>
+    <a class="navbuttons" href="getRecord">Records</a>
+    <a class="navbuttons" href="/users/create-user">Users</a>
+    <a class="navbuttons" href="/pages/headcount.html">Count</a>
+    <a class="navbuttons" href="/pages/Reports.html">Reports</a>
+    <a href="/" class="reportdesk">ReportDesk</a>
 
     </nav>
 
@@ -85,10 +82,15 @@
 
     <div class="rightside">
 
-        <div class="cour">
-    <select name="coursecodedrop" id="coursecodedrop">
+      <div class="cour">
+      <select name="coursecodedrop" id="coursecodedrop">
       <option value="" disabled selected>Course Code(Optional)</option>
-    </select>
+      
+        <%Object.entries(courseCodes).forEach(([key, value]) => {%>
+        <option value="<%=key%>"><%=value.courseCode%></option>
+        <% }) %>
+      
+      </select>
 
     </div>
 
@@ -98,6 +100,7 @@
     
     </div> 
 
+   
     </div>
 
     <div class="submit">
@@ -117,22 +120,6 @@
 <footer>
   <p>University of North Texas at Dallas</p>
 </footer>
-
-
-<script>
-  $(document).ready(function() {
-    // fetch course codes from the server
-    $.get('/coursecodes', function(data) {
-      //add fetched course codes below the default option
-      data.forEach(function(course) {
-        $('#coursecodedrop').append($('<option>', {
-          value: course.courseCode,
-          text: course.courseCode
-        }));
-      });
-    });
-  });
-</script>
 
 </body>
 

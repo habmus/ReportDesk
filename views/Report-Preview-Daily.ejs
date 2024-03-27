@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Daily Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+<body>
+          <nav>
+              <a href="/users/getRecords" onclick="goBack()">Go Back</a>
+          </nav>
+          <section title="Graph">
+            <canvas id="myChart"></canvas> 
+            <script>
+                let yCount = <%- Object.values(reportDaily)[0].headCount %>
+                let yQuestion = <%- Object.values(reportDaily)[0].questionCount %>
+                const xValues = ["Total Count", "Total Questions"]
+                const yValues = [yCount, yQuestion]
+                const barColors = ["Blue", "Black"]
+                new Chart("myChart", 
+                    {
+                        type: "bar",
+                        data: 
+                            {
+                                labels: xValues,
+                                datasets: [{backgroundColor: barColors, data: yValues}]
+                            },
+                        options: 
+                            {
+                                legend: {display: false},
+                                title: {display: true, text: "Daily Report"}, 
+                                scales: {yAxes: [{ticks:{beginAtZero: true}}]},
+                                plugins: {labels: false}
+                            }
+                    })          
+            </script>
+          </section>
+          <hr>
+          <section title="Table">
+            <table>
+                <tr>
+                    <th>Total Count</th>
+                    <th>Total Questions<th>
+                </tr>
+                    <tr>
+                        <td> <%= Object.values(reportDaily)[0].headCount  %> </td>
+                        <td> <%= Object.values(reportDaily)[0].questionCount %> </td>
+                    </tr>
+            </table>
+        
+          </section>
+</body>
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang ="en">
+    <head>
+      <meta charset="utf-8">
+      <title>Report Preview</title>
+      <script>
+        function goBack() {
+        window.history.back();
+}
+      </script>
+   </head>
+   <body>
+        <nav>
+            <a href="Reports.html" onclick="goBack()">Go Back</a>
+        </nav>
+        <section title="Graph">
+        </section>
+        <hr>
+        <section title="Table">
+        </section>
+   </body>
+   <footer>
+    <hr>
+   </footer>
+</html> -->
